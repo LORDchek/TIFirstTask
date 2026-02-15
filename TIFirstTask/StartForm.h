@@ -63,21 +63,21 @@ namespace TIFirstTask {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(23, 28);
+			this->button1->Location = System::Drawing::Point(29, 22);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(67, 51);
+			this->button1->Size = System::Drawing::Size(224, 51);
 			this->button1->TabIndex = 0;
-			this->button1->Text = L"button1";
+			this->button1->Text = L"Шифрование методом \"железнодорожной изгороди\"";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &StartForm::button1_Click);
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(152, 27);
+			this->button2->Location = System::Drawing::Point(29, 106);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(67, 51);
+			this->button2->Size = System::Drawing::Size(224, 51);
 			this->button2->TabIndex = 1;
-			this->button2->Text = L"button2";
+			this->button2->Text = L"Шифрование методом Виженера с прогрессивным ключем";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &StartForm::button2_Click);
 			// 
@@ -85,7 +85,7 @@ namespace TIFirstTask {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 261);
+			this->ClientSize = System::Drawing::Size(284, 186);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
 			this->Name = L"StartForm";

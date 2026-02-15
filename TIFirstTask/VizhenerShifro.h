@@ -35,7 +35,7 @@ namespace TIFirstTask {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^ button1;
+
 		   System::Windows::Forms::Form^ startForm;
 	public:
 		void SetStartForm(System::Windows::Forms::Form^ form) { startForm = form; }
@@ -54,37 +54,18 @@ namespace TIFirstTask {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
-			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(58, 41);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(135, 95);
-			this->button1->TabIndex = 0;
-			this->button1->Text = L"button1";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &VizhenerShifro::button1_Click);
 			// 
 			// VizhenerShifro
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(284, 261);
-			this->Controls->Add(this->button1);
 			this->Name = L"VizhenerShifro";
 			this->Text = L"VizhenerShifro";
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (startForm) {
-			startForm->Show();
-			this->Hide();
-		}
-	}
 	};
 }

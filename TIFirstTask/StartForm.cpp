@@ -11,4 +11,4 @@ int main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	TIFirstTask::StartForm^ form = gcnew TIFirstTask::StartForm();
 	Application::Run(form);
-}
+} 

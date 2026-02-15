@@ -1,4 +1,6 @@
 #pragma once
+#include "VizhenerShifro.h"
+#include "RailwayShifro.h"
 
 namespace TIFirstTask {
 
@@ -40,10 +42,6 @@ namespace TIFirstTask {
 	private: System::Windows::Forms::Button^ button2;
 		   System::Windows::Forms::Form^ vizhenerForm;
 		   System::Windows::Forms::Form^ railvayForm;
-	public:
-		void SetVizhenerForm(System::Windows::Forms::Form^ form) { vizhenerForm = form; }
-	public:
-		void SetRailwayForm(System::Windows::Forms::Form^ form) { railvayForm = form; }
 	protected:
 
 	private:
@@ -97,16 +95,32 @@ namespace TIFirstTask {
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (railvayForm) {
-			railvayForm->Show();
-			this->Hide();
+		if (railvayForm == nullptr) {
+			RailwayShifro^ form1 = gcnew RailwayShifro();
+			form1->SetStartForm(this);
+			form1->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &StartForm::OnRailwayFormClosed);
+			railvayForm = form1;
 		}
+		this->Hide();
+		railvayForm->Show();
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (vizhenerForm) {
-			vizhenerForm->Show();
-			this->Hide();
+		if (vizhenerForm == nullptr) {
+			VizhenerShifro^ form1 = gcnew VizhenerShifro();
+			form1->SetStartForm(this);
+			form1->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &StartForm::OnVizhenerFormClosed);
+			vizhenerForm = form1;
 		}
+		this->Hide();
+		vizhenerForm->Show();
 	}
-	};
+	private: System::Void OnRailwayFormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+		railvayForm = nullptr;
+		this->Show();
+	}
+	private: System::Void OnVizhenerFormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+		railvayForm = nullptr;
+		this->Show();
+	}
+};
 }

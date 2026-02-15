@@ -78,7 +78,6 @@ namespace TIFirstTask {
 			this->Controls->Add(this->button1);
 			this->Name = L"RailwayShifro";
 			this->Text = L"RailwayShifro";
-			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &RailwayShifro::RailwayShifro_FormClosing);
 			this->ResumeLayout(false);
 
 		}
@@ -90,8 +89,5 @@ namespace TIFirstTask {
 		}
 	}
 
-	private: System::Void RailwayShifro_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		startForm->Show();
-	}
 	};
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include "StartForm.h"
 
 namespace TIFirstTask {
 
@@ -76,15 +75,11 @@ namespace TIFirstTask {
 			this->Controls->Add(this->button1);
 			this->Name = L"VizhenerShifro";
 			this->Text = L"VizhenerShifro";
-			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &VizhenerShifro::VizhenerShifro_FormClosing);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 
-	private: System::Void VizhenerShifro_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		startForm->Show();
-	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (startForm) {
 			startForm->Show();

@@ -1,4 +1,7 @@
 #pragma once
+#include <msclr\marshal_cppstd.h>
+#include <string>
+#include <map>
 
 namespace TIFirstTask {
 
@@ -43,12 +46,13 @@ namespace TIFirstTask {
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::NumericUpDown^ numericUpDown1;
+
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::TextBox^ textBox2;
 	private: System::Windows::Forms::TextBox^ textBox1;
 	private: System::Windows::Forms::SaveFileDialog^ saveFileDialog1;
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
+	private: System::Windows::Forms::TextBox^ textBox3;
 
 		   System::Windows::Forms::Form^ startForm;
 	public:
@@ -75,13 +79,12 @@ namespace TIFirstTask {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
+			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// button1
@@ -92,7 +95,7 @@ namespace TIFirstTask {
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(78, 46);
 			this->button1->TabIndex = 22;
-			this->button1->Text = L"????????? ? ????";
+			this->button1->Text = L"Сохранить в файл";
 			this->button1->UseVisualStyleBackColor = true;
 			// 
 			// btnUnshifro
@@ -103,7 +106,7 @@ namespace TIFirstTask {
 			this->btnUnshifro->Name = L"btnUnshifro";
 			this->btnUnshifro->Size = System::Drawing::Size(127, 41);
 			this->btnUnshifro->TabIndex = 21;
-			this->btnUnshifro->Text = L"????????????";
+			this->btnUnshifro->Text = L"Расшифровать";
 			this->btnUnshifro->UseVisualStyleBackColor = true;
 			// 
 			// btnShifro
@@ -114,8 +117,9 @@ namespace TIFirstTask {
 			this->btnShifro->Name = L"btnShifro";
 			this->btnShifro->Size = System::Drawing::Size(127, 41);
 			this->btnShifro->TabIndex = 20;
-			this->btnShifro->Text = L"???????????";
+			this->btnShifro->Text = L"Зашифровать";
 			this->btnShifro->UseVisualStyleBackColor = true;
+			this->btnShifro->Click += gcnew System::EventHandler(this, &VizhenerShifro::btnShifro_Click);
 			// 
 			// label4
 			// 
@@ -125,7 +129,7 @@ namespace TIFirstTask {
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(416, 50);
 			this->label4->TabIndex = 19;
-			this->label4->Text = L"?????????? ??????? ???????? ? ????????????? ??????";
+			this->label4->Text = L"Шифрование методом Виженера с прогрессивным ключом";
 			this->label4->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// label3
@@ -136,7 +140,7 @@ namespace TIFirstTask {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(188, 20);
 			this->label3->TabIndex = 18;
-			this->label3->Text = L"?????????";
+			this->label3->Text = L"Результат";
 			this->label3->TextAlign = System::Drawing::ContentAlignment::TopRight;
 			// 
 			// label2
@@ -147,7 +151,7 @@ namespace TIFirstTask {
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(191, 20);
 			this->label2->TabIndex = 17;
-			this->label2->Text = L"???????? ??????";
+			this->label2->Text = L"Исходная строка";
 			this->label2->TextAlign = System::Drawing::ContentAlignment::TopRight;
 			// 
 			// label1
@@ -158,17 +162,8 @@ namespace TIFirstTask {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(125, 20);
 			this->label1->TabIndex = 16;
-			this->label1->Text = L"????";
+			this->label1->Text = L"Ключ";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopRight;
-			// 
-			// numericUpDown1
-			// 
-			this->numericUpDown1->Location = System::Drawing::Point(173, 102);
-			this->numericUpDown1->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-			this->numericUpDown1->Name = L"numericUpDown1";
-			this->numericUpDown1->Size = System::Drawing::Size(36, 20);
-			this->numericUpDown1->TabIndex = 15;
-			this->numericUpDown1->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// button2
 			// 
@@ -178,7 +173,7 @@ namespace TIFirstTask {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(138, 41);
 			this->button2->TabIndex = 14;
-			this->button2->Text = L"???? ???????? ?????? ?? ?????";
+			this->button2->Text = L"Ввод исходной строки из файла";
 			this->button2->UseVisualStyleBackColor = true;
 			// 
 			// textBox2
@@ -199,11 +194,19 @@ namespace TIFirstTask {
 			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
 			// 
+			// textBox3
+			// 
+			this->textBox3->Location = System::Drawing::Point(173, 102);
+			this->textBox3->Name = L"textBox3";
+			this->textBox3->Size = System::Drawing::Size(177, 20);
+			this->textBox3->TabIndex = 23;
+			// 
 			// VizhenerShifro
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(501, 316);
+			this->Controls->Add(this->textBox3);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->btnUnshifro);
 			this->Controls->Add(this->btnShifro);
@@ -211,17 +214,93 @@ namespace TIFirstTask {
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->numericUpDown1);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->textBox1);
 			this->Name = L"VizhenerShifro";
 			this->Text = L"VizhenerShifro";
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+	std::string convertString(std::string input) {
+		std::string result = "";
+
+		static const std::map<char, char> lowerToUpper = {
+			{'а', 'А'}, {'б', 'Б'}, {'в', 'В'}, {'г', 'Г'}, {'д', 'Д'},
+			{'е', 'Е'}, {'ё', 'Ё'}, {'ж', 'Ж'}, {'з', 'З'}, {'и', 'И'},
+			{'й', 'Й'}, {'к', 'К'}, {'л', 'Л'}, {'м', 'М'}, {'н', 'Н'},
+			{'о', 'О'}, {'п', 'П'}, {'р', 'Р'}, {'с', 'С'}, {'т', 'Т'},
+			{'у', 'У'}, {'ф', 'Ф'}, {'х', 'Х'}, {'ц', 'Ц'}, {'ч', 'Ч'},
+			{'ш', 'Ш'}, {'щ', 'Щ'}, {'ъ', 'Ъ'}, {'ы', 'Ы'}, {'ь', 'Ь'},
+			{'э', 'Э'}, {'ю', 'Ю'}, {'я', 'Я'}
+		};
+
+		for (char& c : input) {
+			auto it = lowerToUpper.find(c);
+			if (it != lowerToUpper.end()) {
+				c = it->second;
+			}
+		}
+
+		for (char ch : input) {
+			if ((ch >= 'А' && ch <= 'Я') || ch == 'Ё') {
+				result += ch;
+			}
+		}
+
+		return result;
+	}
+
+	char index_to_char(int index) {
+		if (index == 6) return 'Ё';
+
+		if (index < 6) {
+			return 'А' + index;
+		}
+		else {
+			return 'А' + index + 1;
+		}
+	}
+
+	int char_to_index(char c) {
+		if (c >= 'А' && c <= 'Я') {
+			if (c <= 'Е') return c - 'А';           
+			if (c == 'Ё') return 6;                  
+			if (c >= 'Ж' && c <= 'Я') {
+				if (c <= 'Е') return c - 'А';        
+				return c - 'А' - 1;                   
+			}
+		}
+	}
+
+private: System::Void btnShifro_Click(System::Object^ sender, System::EventArgs^ e) {
+	std::string text1 = msclr::interop::marshal_as<std::string>(textBox1->Text);
+	std::string str = convertString(text1);
+	std::string text2 = msclr::interop::marshal_as<std::string>(textBox3->Text);
+	std::string key = convertString(text2);
+
+	std::string shifroText;
+	int key_pos = 0;
+
+	for (size_t i = 0; i < str.length(); i++) {
+		char text_char = str[i];
+		char key_char = key[key_pos % key.length()];
+
+		int text_index = char_to_index(text_char);
+		int key_index = char_to_index(key_char);
+
+		int shift = key_index + (key_pos / key.length());
+
+		int encrypted_index = (text_index + shift) % 33;
+		char encrypted_char = index_to_char(encrypted_index);
+
+		shifroText += encrypted_char;
+		key_pos++;
+	}
+
+	textBox2->Text = msclr::interop::marshal_as<System::String^>(shifroText);
+}
 };
 }

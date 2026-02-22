@@ -315,9 +315,8 @@ private: System::Void btnUnshifro_Click(System::Object^ sender, System::EventArg
 	std::string text1 = msclr::interop::marshal_as<std::string>(textBox1->Text);
 	std::string str = convertString(text1);
 	std::string text2 = msclr::interop::marshal_as<std::string>(textBox3->Text);
-	if (text2 != "") {
-		std::string key = convertString(text2);
-
+	std::string key = convertString(text2);
+	if (key != "") {
 		std::string unshifroText;
 		int key_pos = 0;
 

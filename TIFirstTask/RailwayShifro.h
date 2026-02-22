@@ -14,25 +14,16 @@ namespace TIFirstTask {
 	using namespace System::Drawing;
 	using namespace System::IO;
 
-	/// <summary>
-	/// Сводка для RailwayShifro
-	/// </summary>
 	public ref class RailwayShifro : public System::Windows::Forms::Form
 	{
 	public:
 		RailwayShifro(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
 			startForm = nullptr;
 		}
 
 	protected:
-		/// <summary>
-		/// Освободить все используемые ресурсы.
-		/// </summary>
 		~RailwayShifro()
 		{
 			if (components)
@@ -64,16 +55,9 @@ namespace TIFirstTask {
 	protected:
 
 	private:
-		/// <summary>
-		/// Обязательная переменная конструктора.
-		/// </summary>
 		System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
-		/// Требуемый метод для поддержки конструктора — не изменяйте 
-		/// содержимое этого метода с помощью редактора кода.
-		/// </summary>
 		void InitializeComponent(void)
 		{
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
@@ -245,7 +229,6 @@ namespace TIFirstTask {
 			{'э', 'Э'}, {'ю', 'Ю'}, {'я', 'Я'}
 		};
 
-		// Преобразуем в верхний регистр
 		for (char& c : input){
 			auto it = lowerToUpper.find(c);
 			if (it != lowerToUpper.end()) {
@@ -253,7 +236,6 @@ namespace TIFirstTask {
 			}
 		}
 
-		// Фильтруем только русские буквы
 		for (char ch : input) {
 			if ((ch >= 'А' && ch <= 'Я') || ch == 'Ё') {
 				result += ch;

@@ -286,54 +286,62 @@ private: System::Void btnShifro_Click(System::Object^ sender, System::EventArgs^
 	std::string str = convertString(text1);
 	std::string text2 = msclr::interop::marshal_as<std::string>(textBox3->Text);
 	std::string key = convertString(text2);
+	if (key != "") {
+		std::string shifroText;
+		int key_pos = 0;
 
-	std::string shifroText;
-	int key_pos = 0;
+		for (size_t i = 0; i < str.length(); i++) {
+			char text_char = str[i];
+			char key_char = key[key_pos % key.length()];
 
-	for (size_t i = 0; i < str.length(); i++) {
-		char text_char = str[i];
-		char key_char = key[key_pos % key.length()];
+			int text_index = char_to_index(text_char);
+			int key_index = char_to_index(key_char);
 
-		int text_index = char_to_index(text_char);
-		int key_index = char_to_index(key_char);
+			int shift = key_index + (key_pos / key.length());
 
-		int shift = key_index + (key_pos / key.length());
+			int encrypted_index = (text_index + shift) % 33;
+			char encrypted_char = index_to_char(encrypted_index);
 
-		int encrypted_index = (text_index + shift) % 33;
-		char encrypted_char = index_to_char(encrypted_index);
-
-		shifroText += encrypted_char;
-		key_pos++;
+			shifroText += encrypted_char;
+			key_pos++;
+		}
+		textBox2->Text = msclr::interop::marshal_as<System::String^>(shifroText);
 	}
-
-	textBox2->Text = msclr::interop::marshal_as<System::String^>(shifroText);
+	else {
+		System::Windows::Forms::MessageBox::Show("Ошибка! ключ не может быть пустым или не иметь символов из кириллицы!");
+	}
 }
 private: System::Void btnUnshifro_Click(System::Object^ sender, System::EventArgs^ e) {
 	std::string text1 = msclr::interop::marshal_as<std::string>(textBox1->Text);
 	std::string str = convertString(text1);
 	std::string text2 = msclr::interop::marshal_as<std::string>(textBox3->Text);
-	std::string key = convertString(text2);
+	if (text2 != "") {
+		std::string key = convertString(text2);
 
-	std::string unshifroText;
-	int key_pos = 0;
+		std::string unshifroText;
+		int key_pos = 0;
 
-	for (size_t i = 0; i < str.length(); i++) {
-		char enc_char = str[i];
-		char key_char = key[key_pos % key.length()];
+		for (size_t i = 0; i < str.length(); i++) {
+			char enc_char = str[i];
+			char key_char = key[key_pos % key.length()];
 
-		int enc_index = char_to_index(enc_char);
-		int key_index = char_to_index(key_char);
+			int enc_index = char_to_index(enc_char);
+			int key_index = char_to_index(key_char);
 
-		int shift = key_index + (key_pos / key.length());
+			int shift = key_index + (key_pos / key.length());
 
-		int decrypted_index = (enc_index - shift + 33) % 33;
-		char decrypted_char = index_to_char(decrypted_index);
+			int decrypted_index = (enc_index - shift + 33) % 33;
+			char decrypted_char = index_to_char(decrypted_index);
 
-		unshifroText += decrypted_char;
-		key_pos++;
+			unshifroText += decrypted_char;
+			key_pos++;
+		}
+
+		textBox2->Text = msclr::interop::marshal_as<System::String^>(unshifroText);
 	}
-
-	textBox2->Text = msclr::interop::marshal_as<System::String^>(unshifroText);
+	else {
+		System::Windows::Forms::MessageBox::Show("Ошибка! ключ не может быть пустым или не иметь символов из кириллицы!");
+	}
 }
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 	openFileDialog1->Title = L"Выберите файл";

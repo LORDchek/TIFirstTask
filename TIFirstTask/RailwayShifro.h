@@ -1,6 +1,8 @@
 #pragma once
 #include <msclr\marshal_cppstd.h>
 #include <vector>
+#include <cctype>
+#include <map>
 
 namespace TIFirstTask {
 
@@ -229,11 +231,36 @@ namespace TIFirstTask {
 
 		}
 #pragma endregion 
-	int maxInt(std::vector<int> nums) {
-		int max = 0;
-		for (int i = 0; i < nums.size(); i++)
-			if (nums[i] > max) max = nums[i];
-		return max;
+			
+	std::string convertString(std::string input) {
+		std::string result = "";
+
+		static const std::map<char, char> lowerToUpper = {
+			{'а', 'А'}, {'б', 'Б'}, {'в', 'В'}, {'г', 'Г'}, {'д', 'Д'},
+			{'е', 'Е'}, {'ё', 'Ё'}, {'ж', 'Ж'}, {'з', 'З'}, {'и', 'И'},
+			{'й', 'Й'}, {'к', 'К'}, {'л', 'Л'}, {'м', 'М'}, {'н', 'Н'},
+			{'о', 'О'}, {'п', 'П'}, {'р', 'Р'}, {'с', 'С'}, {'т', 'Т'},
+			{'у', 'У'}, {'ф', 'Ф'}, {'х', 'Х'}, {'ц', 'Ц'}, {'ч', 'Ч'},
+			{'ш', 'Ш'}, {'щ', 'Щ'}, {'ъ', 'Ъ'}, {'ы', 'Ы'}, {'ь', 'Ь'},
+			{'э', 'Э'}, {'ю', 'Ю'}, {'я', 'Я'}
+		};
+
+		// Преобразуем в верхний регистр
+		for (char& c : input){
+			auto it = lowerToUpper.find(c);
+			if (it != lowerToUpper.end()) {
+				c = it->second;
+			}
+		}
+
+		// Фильтруем только русские буквы
+		for (char ch : input) {
+			if ((ch >= 'А' && ch <= 'Я') || ch == 'Ё') {
+				result += ch;
+			}
+		}
+
+		return result;
 	}
 
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -250,10 +277,11 @@ namespace TIFirstTask {
 		}
 	}
 	private: System::Void btnShifro_Click(System::Object^ sender, System::EventArgs^ e) {
-		std::string str = msclr::interop::marshal_as<std::string>(textBox1->Text);
+		std::string text = msclr::interop::marshal_as<std::string>(textBox1->Text);
 		int key = (int)numericUpDown1->Value;
-		std::string shifroText = "";
+		std::string str = convertString(text);
 
+		std::string shifroText = "";
 		if (key == 1 || key >= str.size()) {
 			shifroText = str;
 		}
@@ -285,8 +313,11 @@ namespace TIFirstTask {
 		textBox2->Text = msclr::interop::marshal_as<System::String^>(shifroText);
 	}
 	private: System::Void btnUnshifro_Click(System::Object^ sender, System::EventArgs^ e) {
-		std::string str = msclr::interop::marshal_as<std::string>(textBox1->Text);
+		std::string text = msclr::interop::marshal_as<std::string>(textBox1->Text);
 		int key = (int)numericUpDown1->Value;
+
+		std::string str = convertString(text);
+			 
 		std::string unshifroText = "";
 		if (key == 1 || key >= str.size()) {
 			unshifroText = str;
@@ -295,34 +326,26 @@ namespace TIFirstTask {
 			int period = 2 * key - 2;
 			int size = str.size();
 
-			// Создаем вектор для хранения позиций каждого символа в строках
 			std::vector<std::vector<int>> rows(key);
 			int idx = 0;
 
-			// Определяем, сколько символов попадет в каждую строку
-			// Верхняя и нижняя строки получают по одному символу за период
 			int fullCycles = size / period;
 			int remainder = size % period;
 
-			// Верхняя строка
 			rows[0].resize(fullCycles + (remainder > 0 ? 1 : 0));
 
-			// Средние строки
 			for (int i = 1; i < key - 1; i++) {
 				rows[i].resize(fullCycles * 2 + (remainder > i ? 1 : 0) + (remainder > period - i ? 1 : 0));
 			}
 
-			// Нижняя строка
 			rows[key - 1].resize(fullCycles + (remainder >= key ? 1 : 0));
 
-			// Заполняем строки символами из зашифрованного текста
 			for (int i = 0; i < key; i++) {
 				for (int j = 0; j < rows[i].size(); j++) {
 					rows[i][j] = str[idx++];
 				}
 			}
 
-			// Восстанавливаем исходный текст
 			for (int i = 0; i < size; i++) {
 				int row = i % period;
 				if (row >= key) {

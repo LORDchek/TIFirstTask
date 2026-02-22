@@ -10,7 +10,7 @@ namespace TIFirstTask {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Сводка для VizhenerShifro
+	/// ?????? ??? VizhenerShifro
 	/// </summary>
 	public ref class VizhenerShifro : public System::Windows::Forms::Form
 	{
@@ -19,14 +19,14 @@ namespace TIFirstTask {
 		{
 			InitializeComponent();
 			//
-			//TODO: добавьте код конструктора
+			//TODO: ???????? ??? ????????????
 			//
 			startForm = nullptr;
 		}
 
 	protected:
 		/// <summary>
-		/// Освободить все используемые ресурсы.
+		/// ?????????? ??? ???????????? ???????.
 		/// </summary>
 		~VizhenerShifro()
 		{
@@ -57,14 +57,14 @@ namespace TIFirstTask {
 
 	private:
 		/// <summary>
-		/// Обязательная переменная конструктора.
+		/// ???????????? ?????????? ????????????.
 		/// </summary>
 		System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Требуемый метод для поддержки конструктора — не изменяйте 
-		/// содержимое этого метода с помощью редактора кода.
+		/// ????????? ????? ??? ????????? ???????????? ? ?? ????????? 
+		/// ?????????? ????? ?????? ? ??????? ????????? ????.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -92,7 +92,7 @@ namespace TIFirstTask {
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(78, 46);
 			this->button1->TabIndex = 22;
-			this->button1->Text = L"Сохранить в файл";
+			this->button1->Text = L"????????? ? ????";
 			this->button1->UseVisualStyleBackColor = true;
 			// 
 			// btnUnshifro
@@ -103,7 +103,7 @@ namespace TIFirstTask {
 			this->btnUnshifro->Name = L"btnUnshifro";
 			this->btnUnshifro->Size = System::Drawing::Size(127, 41);
 			this->btnUnshifro->TabIndex = 21;
-			this->btnUnshifro->Text = L"Расшифровать";
+			this->btnUnshifro->Text = L"????????????";
 			this->btnUnshifro->UseVisualStyleBackColor = true;
 			// 
 			// btnShifro
@@ -114,7 +114,7 @@ namespace TIFirstTask {
 			this->btnShifro->Name = L"btnShifro";
 			this->btnShifro->Size = System::Drawing::Size(127, 41);
 			this->btnShifro->TabIndex = 20;
-			this->btnShifro->Text = L"Зашифровать";
+			this->btnShifro->Text = L"???????????";
 			this->btnShifro->UseVisualStyleBackColor = true;
 			// 
 			// label4
@@ -125,7 +125,7 @@ namespace TIFirstTask {
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(416, 50);
 			this->label4->TabIndex = 19;
-			this->label4->Text = L"Шифрование методом Виженера с прогрессивным ключом";
+			this->label4->Text = L"?????????? ??????? ???????? ? ????????????? ??????";
 			this->label4->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// label3
@@ -136,7 +136,7 @@ namespace TIFirstTask {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(188, 20);
 			this->label3->TabIndex = 18;
-			this->label3->Text = L"Результат";
+			this->label3->Text = L"?????????";
 			this->label3->TextAlign = System::Drawing::ContentAlignment::TopRight;
 			// 
 			// label2
@@ -147,7 +147,7 @@ namespace TIFirstTask {
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(191, 20);
 			this->label2->TabIndex = 17;
-			this->label2->Text = L"Исходная строка";
+			this->label2->Text = L"???????? ??????";
 			this->label2->TextAlign = System::Drawing::ContentAlignment::TopRight;
 			// 
 			// label1
@@ -158,7 +158,7 @@ namespace TIFirstTask {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(125, 20);
 			this->label1->TabIndex = 16;
-			this->label1->Text = L"Ключ";
+			this->label1->Text = L"????";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopRight;
 			// 
 			// numericUpDown1
@@ -178,7 +178,7 @@ namespace TIFirstTask {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(138, 41);
 			this->button2->TabIndex = 14;
-			this->button2->Text = L"Ввод исходной строки из файла";
+			this->button2->Text = L"???? ???????? ?????? ?? ?????";
 			this->button2->UseVisualStyleBackColor = true;
 			// 
 			// textBox2

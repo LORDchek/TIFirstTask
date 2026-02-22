@@ -229,58 +229,11 @@ namespace TIFirstTask {
 
 		}
 #pragma endregion 
-
-	std::string convertString(const std::string& input) {
-		std::string result;
-		result.reserve(input.length());
-
-		for (size_t i = 0; i < input.length(); ) {
-			unsigned char c = static_cast<unsigned char>(input[i]);
-
-			if (c == 0xD0) {
-				if (i + 1 < input.length()) {
-					unsigned char next = static_cast<unsigned char>(input[i + 1]);
-
-					if (next >= 0x90 && next <= 0xBF) {
-						if (next >= 0xB0 && next <= 0xBF) { 
-							result.push_back(static_cast<char>(0xD0));
-							result.push_back(static_cast<char>(next - 0x20));
-						}
-						else { 
-							result.push_back(static_cast<char>(0xD0));
-							result.push_back(static_cast<char>(next));
-						}
-					}
-					i += 2;
-				}
-				else {
-					i++;
-				}
-			}
-			else if (c == 0xD1) {
-				if (i + 1 < input.length()) {
-					unsigned char next = static_cast<unsigned char>(input[i + 1]);
-
-					if (next >= 0x80 && next <= 0x8F) { 
-						result.push_back(static_cast<char>(0xD0));
-						result.push_back(static_cast<char>(next - 0x70));
-					}
-					else if (next == 0x91) { 
-						result.push_back(static_cast<char>(0xD0));
-						result.push_back(static_cast<char>(0x81)); 
-					}
-					i += 2;
-				}
-				else {
-					i++;
-				}
-			}
-			else {
-				i++;
-			}
-		}
-
-		return result;
+	int maxInt(std::vector<int> nums) {
+		int max = 0;
+		for (int i = 0; i < nums.size(); i++)
+			if (nums[i] > max) max = nums[i];
+		return max;
 	}
 
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -291,23 +244,23 @@ namespace TIFirstTask {
 			StreamReader^ reader = gcnew StreamReader(openFileDialog1->FileName);
 			String^ str = reader->ReadLine();
 			reader->Close();
-			textBox1->Text = str;
+			if (str) {
+				textBox1->Text = str;
+			}
 		}
 	}
 	private: System::Void btnShifro_Click(System::Object^ sender, System::EventArgs^ e) {
-		std::string text = msclr::interop::marshal_as<std::string>(textBox1->Text);
+		std::string str = msclr::interop::marshal_as<std::string>(textBox1->Text);
 		int key = (int)numericUpDown1->Value;
-		std::string unshifroText = convertString(text);
-
 		std::string shifroText = "";
 
-		if (key == 1 || key >= unshifroText.size()) {
-			shifroText = unshifroText;
+		if (key == 1 || key >= str.size()) {
+			shifroText = str;
 		}
 		else {
 			int k = 2 * key;
-			for (int j = 0; j < unshifroText.size(); ) {
-				shifroText += unshifroText[j];
+			for (int j = 0; j < str.size(); ) {
+				shifroText += str[j];
 				j += k - 2;
 			}
 			
@@ -315,16 +268,16 @@ namespace TIFirstTask {
 				int step1 = k - 2 - 2 * i;
 				int step2 = k - step1 - 2;
 				int stepCount = 0;
-				for (int j = i; j < unshifroText.size(); ) {
-					shifroText += unshifroText[j];
+				for (int j = i; j < str.size(); ) {
+					shifroText += str[j];
 					j += (stepCount % 2 == 0) ? step1 : step2;
 					stepCount++;
 				}
 			}
 
-			for (int j = key - 1; j < unshifroText.size(); ) {
-				char c = unshifroText[j];
-				shifroText += unshifroText[j];
+			for (int j = key - 1; j < str.size(); ) {
+				char c = str[j];
+				shifroText += str[j];
 				j += k - 2;
 			}
 		}
@@ -332,37 +285,44 @@ namespace TIFirstTask {
 		textBox2->Text = msclr::interop::marshal_as<System::String^>(shifroText);
 	}
 	private: System::Void btnUnshifro_Click(System::Object^ sender, System::EventArgs^ e) {
-		std::string text = msclr::interop::marshal_as<std::string>(textBox1->Text);
+		std::string str = msclr::interop::marshal_as<std::string>(textBox1->Text);
 		int key = (int)numericUpDown1->Value;
-		std::string shifroText = convertString(text);
 		std::string unshifroText = "";
-		if (key == 1 || key >= shifroText.size()) {
-			unshifroText = shifroText;
+		if (key == 1 || key >= str.size()) {
+			unshifroText = str;
 		}
 		else {
 			int period = 2 * key - 2;
-			int size = shifroText.size();
+			int size = str.size();
 
+			// Создаем вектор для хранения позиций каждого символа в строках
 			std::vector<std::vector<int>> rows(key);
 			int idx = 0;
 
+			// Определяем, сколько символов попадет в каждую строку
+			// Верхняя и нижняя строки получают по одному символу за период
 			int fullCycles = size / period;
 			int remainder = size % period;
 
+			// Верхняя строка
 			rows[0].resize(fullCycles + (remainder > 0 ? 1 : 0));
 
+			// Средние строки
 			for (int i = 1; i < key - 1; i++) {
 				rows[i].resize(fullCycles * 2 + (remainder > i ? 1 : 0) + (remainder > period - i ? 1 : 0));
 			}
 
+			// Нижняя строка
 			rows[key - 1].resize(fullCycles + (remainder >= key ? 1 : 0));
 
+			// Заполняем строки символами из зашифрованного текста
 			for (int i = 0; i < key; i++) {
 				for (int j = 0; j < rows[i].size(); j++) {
-					rows[i][j] = shifroText[idx++];
+					rows[i][j] = str[idx++];
 				}
 			}
 
+			// Восстанавливаем исходный текст
 			for (int i = 0; i < size; i++) {
 				int row = i % period;
 				if (row >= key) {
@@ -390,9 +350,16 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	saveFileDialog1->DefaultExt = L"txt";
 
 	if (saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-		StreamWriter^ writer = gcnew StreamWriter(saveFileDialog1->FileName);
-		writer->Write(textBox2->Text);
-		writer->Close();
+		try {
+			StreamWriter^ writer = gcnew StreamWriter(saveFileDialog1->FileName);
+
+			writer->Write(textBox2->Text);
+			writer->Close();
+		}
+		catch (Exception^ ex) {
+			MessageBox::Show(L"Ошибка при сохранении файла: " + ex->Message,
+				L"Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 }
 };

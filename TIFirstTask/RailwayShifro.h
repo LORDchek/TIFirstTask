@@ -373,16 +373,9 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	saveFileDialog1->DefaultExt = L"txt";
 
 	if (saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-		try {
-			StreamWriter^ writer = gcnew StreamWriter(saveFileDialog1->FileName);
-
-			writer->Write(textBox2->Text);
-			writer->Close();
-		}
-		catch (Exception^ ex) {
-			MessageBox::Show(L"Ошибка при сохранении файла: " + ex->Message,
-				L"Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
+		StreamWriter^ writer = gcnew StreamWriter(saveFileDialog1->FileName);
+		writer->Write(textBox2->Text);
+		writer->Close();
 	}
 }
 };

@@ -11,6 +11,7 @@ namespace TIFirstTask {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::IO;
 
 	/// <summary>
 	/// ?????? ??? VizhenerShifro
@@ -97,6 +98,7 @@ namespace TIFirstTask {
 			this->button1->TabIndex = 22;
 			this->button1->Text = L"Сохранить в файл";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &VizhenerShifro::button1_Click);
 			// 
 			// btnUnshifro
 			// 
@@ -108,6 +110,7 @@ namespace TIFirstTask {
 			this->btnUnshifro->TabIndex = 21;
 			this->btnUnshifro->Text = L"Расшифровать";
 			this->btnUnshifro->UseVisualStyleBackColor = true;
+			this->btnUnshifro->Click += gcnew System::EventHandler(this, &VizhenerShifro::btnUnshifro_Click);
 			// 
 			// btnShifro
 			// 
@@ -175,6 +178,7 @@ namespace TIFirstTask {
 			this->button2->TabIndex = 14;
 			this->button2->Text = L"Ввод исходной строки из файла";
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &VizhenerShifro::button2_Click);
 			// 
 			// textBox2
 			// 
@@ -253,25 +257,27 @@ namespace TIFirstTask {
 		return result;
 	}
 
-	char index_to_char(int index) {
-		if (index == 6) return 'Ё';
-
-		if (index < 6) {
-			return 'А' + index;
+	int char_to_index(char c) {
+		if (c >= 'А' && c <= 'Е') {
+			return c - 'А';
 		}
-		else {
-			return 'А' + index + 1;
+		if (c == 'Ё') {
+			return 6; 
+		}
+		if (c >= 'Ж' && c <= 'Я') {
+			return c - 'А' + 1; 
 		}
 	}
 
-	int char_to_index(char c) {
-		if (c >= 'А' && c <= 'Я') {
-			if (c <= 'Е') return c - 'А';           
-			if (c == 'Ё') return 6;                  
-			if (c >= 'Ж' && c <= 'Я') {
-				if (c <= 'Е') return c - 'А';        
-				return c - 'А' - 1;                   
-			}
+	char index_to_char(int index) {
+		if (index >= 0 && index <= 5) {
+			return 'А' + index;  
+		}
+		if (index == 6) {
+			return 'Ё'; 
+		}
+		if (index >= 7 && index <= 32) {
+			return 'А' + index - 1;
 		}
 	}
 
@@ -301,6 +307,57 @@ private: System::Void btnShifro_Click(System::Object^ sender, System::EventArgs^
 	}
 
 	textBox2->Text = msclr::interop::marshal_as<System::String^>(shifroText);
+}
+private: System::Void btnUnshifro_Click(System::Object^ sender, System::EventArgs^ e) {
+	std::string text1 = msclr::interop::marshal_as<std::string>(textBox1->Text);
+	std::string str = convertString(text1);
+	std::string text2 = msclr::interop::marshal_as<std::string>(textBox3->Text);
+	std::string key = convertString(text2);
+
+	std::string unshifroText;
+	int key_pos = 0;
+
+	for (size_t i = 0; i < str.length(); i++) {
+		char enc_char = str[i];
+		char key_char = key[key_pos % key.length()];
+
+		int enc_index = char_to_index(enc_char);
+		int key_index = char_to_index(key_char);
+
+		int shift = key_index + (key_pos / key.length());
+
+		int decrypted_index = (enc_index - shift + 33) % 33;
+		char decrypted_char = index_to_char(decrypted_index);
+
+		unshifroText += decrypted_char;
+		key_pos++;
+	}
+
+	textBox2->Text = msclr::interop::marshal_as<System::String^>(unshifroText);
+}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	openFileDialog1->Title = L"Выберите файл";
+	openFileDialog1->Filter = L"Текстовые файлы (*.txt)|*.txt";
+	if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+
+		StreamReader^ reader = gcnew StreamReader(openFileDialog1->FileName);
+		String^ str = reader->ReadLine();
+		reader->Close();
+		if (str) {
+			textBox1->Text = str;
+		}
+	}
+}
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	saveFileDialog1->Title = L"Сохранить файл";
+	saveFileDialog1->Filter = L"Текстовые файлы (*.txt)|*.txt";
+	saveFileDialog1->DefaultExt = L"txt";
+
+	if (saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		StreamWriter^ writer = gcnew StreamWriter(saveFileDialog1->FileName);
+		writer->Write(textBox2->Text);
+		writer->Close();
+	}
 }
 };
 }
